@@ -1,25 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react';
+import HeaderPage from './components/HeaderPage';
+import { Body } from './styles';
+import ContentPage from './components/ContentPage';
+import AppContext from './AppContext';
+import { getLatLnt } from './services/gelocation';
 
 function App() {
+  const [value, setValue] = useState({});
+
+  useEffect(() => {
+    function init() {
+      const latLng = getLatLnt();
+
+      if (latLng) {
+        setValue({
+          ...value,
+          location: latLng
+        });
+      }
+    }
+
+    init();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppContext.Provider
+      value={{
+        value,
+        updateState: (prop, v) =>
+          setValue({
+            ...value,
+            [prop]: v
+          })
+      }}
+    >
+      <Body>
+        <HeaderPage />
+        <ContentPage />
+      </Body>
+    </AppContext.Provider>
   );
 }
 
