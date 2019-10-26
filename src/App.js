@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import HeaderPage from './components/HeaderPage';
+import SearchPage from './components/SearchPage';
 import { Body } from './styles';
 import ContentPage from './components/ContentPage';
 import AppContext from './AppContext';
@@ -35,10 +35,7 @@ function App() {
           })
       }}
     >
-      <Body>
-        <HeaderPage />
-        <ContentPage />
-      </Body>
+      <Body>{!value.location ? <SearchPage /> : <ContentPage />}</Body>
     </AppContext.Provider>
   );
 }

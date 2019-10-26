@@ -8,3 +8,8 @@ export const HeaderPageContainer = styled.div`
   margin-top: 60px;
   padding: 0 16px;
 `;
+
+export const ButtonLocation = styled.div`
+  text-align: center;
+  margin-top: 6px;
+`;

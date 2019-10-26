@@ -5,7 +5,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import ListAddress from '../ListAddress';
 import AppContext from '../../AppContext';
 import {
   requestPermissionLocation,
@@ -34,9 +33,7 @@ function ModalPermission() {
     try {
       setOpen(false);
       const coords = await requestPermissionLocation();
-
-      console.log('coords', coords);
-
+ 
       updateState('location', {
         lat: coords.latitude,
         lng: coords.longitude

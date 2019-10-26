@@ -42,7 +42,7 @@ export async function getCurrentWeather({ lat, lon }) {
 }
 
 export async function getForecast({ lat, lon }) {
-  const { data } = await axios.get(`${weatherUrl}/forecast`, {
+  const { data: results } = await axios.get(`${weatherUrl}/forecast`, {
     params: {
       lat,
       lon,
@@ -50,21 +50,18 @@ export async function getForecast({ lat, lon }) {
     }
   });
 
-  const { main } = data;
-
-  console.log('data Forecast', data)
-
-  return {
-    humidity: main.humidity,
-    temp: convertKelvinToCelsius(main.temp),
-    temp_max: convertKelvinToCelsius(main.temp_max),
-    temp_min: convertKelvinToCelsius(main.temp_min),
-    name: data.name,
-    country: data.sys.country
-  };
+  return results.map(data => {
+    const { main } = data;
+    return {
+      humidity: main.humidity,
+      temp: convertKelvinToCelsius(main.temp),
+      temp_max: convertKelvinToCelsius(main.temp_max),
+      temp_min: convertKelvinToCelsius(main.temp_min),
+      name: data.city.name,
+      country: data.city.country
+    };
+  });
 }
-
- 
 
 export function saveHistory(search) {
   const results = getHistory();
