@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
-import { Button, Paper, Grid } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import Skeleton from 'react-loading-skeleton';
 import CardClima from '../CardClima';
 import AppContext from '../../AppContext';
 import { getCurrentWeather, getForecast } from '../../services/search';
@@ -12,14 +11,20 @@ import {
   WrapperHeader,
   WrapperHeaderTitle,
   WrapperHeaderTemp,
+  WrapperHeaderTempImage,
   WrapperHeaderButton
 } from './styles';
+import ChartClima from '../ChartClima/ChartClima';
+import { weatherSiteUrl } from '../../infra/config';
 
 function ContentPage() {
   const { value, updateState } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
   const [currentWeather, setCurrentWeather] = useState({});
-  const [forecastWeather, setForecastWeather] = useState([]);
+  const [forecastWeather, setForecastWeather] = useState({
+    list: [],
+    group: [{}, {}, {}]
+  });
 
   useEffect(() => {
     if (!value.location) return;
@@ -27,42 +32,43 @@ function ContentPage() {
     const { location } = value;
 
     async function loadWeathers() {
-      setIsLoading(true);
-
       try {
         const result = await getCurrentWeather({
           lat: location.lat,
           lon: location.lng
         });
 
-        console.log('results', result);
-
         setCurrentWeather(result);
-      } catch (e) {
-      } finally {
-        setIsLoading(false);
-      }
+
+        return result;
+      } catch (e) {}
     }
 
-    async function loadForecast() {
-      setIsLoading(true);
-
+    async function loadForecast(current) {
       try {
         const result = await getForecast({
           lat: location.lat,
           lon: location.lng
         });
 
-        console.log('results', result);
+        const first = result.group.splice(0, 1);
 
+        setCurrentWeather({
+          ...current,
+          ...first[0]
+        });
         setForecastWeather(result);
-      } catch (e) {
-      } finally {
-        setIsLoading(false);
-      }
+      } catch (e) {}
     }
 
-    Promise.all([loadWeathers(), loadForecast()]);
+    async function init() {
+      setIsLoading(true);
+      const current = await loadWeathers();
+      await loadForecast(current);
+      setIsLoading(false);
+    }
+
+    init();
   }, [value]);
 
   const clearStateLocation = useCallback(async () => {
@@ -76,9 +82,33 @@ function ContentPage() {
         <WrapperHeader>
           <Container>
             <WrapperHeaderTitle>
-              {currentWeather.name || ''} - {currentWeather.country || ''}
+              <h2>
+                {value.location.name ? (
+                  value.location.name
+                ) : (
+                  <span>
+                    {value.location.name || currentWeather.name} ,{' '}
+                    {currentWeather.country}
+                  </span>
+                )}
+              </h2>
+              <p>{currentWeather.humidity}% de humidade o ar</p>
             </WrapperHeaderTitle>
-            <WrapperHeaderTemp>{currentWeather.temp}ºC</WrapperHeaderTemp>
+            <WrapperHeaderTemp>
+              <h2>{currentWeather.temp}º</h2>
+              <p>
+                Mínima {currentWeather.temp_min}º / Máxima{' '}
+                {currentWeather.temp_max}º
+              </p>
+
+              <WrapperHeaderTempImage>
+                <img
+                  alt="Tempo"
+                  src={`${weatherSiteUrl}/themes/openweathermap/assets/vendor/owm/img/widgets/${currentWeather.weather &&
+                    currentWeather.weather.icon}.png`}
+                />
+              </WrapperHeaderTempImage>
+            </WrapperHeaderTemp>
 
             <WrapperHeaderButton>
               <Button
@@ -94,16 +124,17 @@ function ContentPage() {
 
         <ModalPermission />
 
-        {isLoading && <Skeleton height={170} />}
         <Container>
           <Grid container spacing={3}>
-            {forecastWeather.map((item, key) => (
-              <Grid item key={key} xs={12}>
-                <Paper>
-                  <CardClima data={item} />
-                </Paper>
-              </Grid>
-            ))}
+            <Grid item sm={4} xs={12}>
+              {forecastWeather.group.map((item, key) => (
+                <CardClima key={key} isLoading={isLoading} data={item} />
+              ))}
+            </Grid>
+
+            <Grid item sm={8} xs={12}>
+              <ChartClima isLoading={isLoading} data={forecastWeather} />
+            </Grid>
           </Grid>
         </Container>
       </div>

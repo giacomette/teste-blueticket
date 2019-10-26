@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
+import 'moment/locale/pt-br';
 import SearchPage from './components/SearchPage';
 import { Body } from './styles';
 import ContentPage from './components/ContentPage';

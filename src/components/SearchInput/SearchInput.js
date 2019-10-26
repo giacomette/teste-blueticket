@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SearchInputContainer, InputText } from './styles';
 import { IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { SearchInputContainer, InputText } from './styles';
 
-function SearchInput({ value, onChange, onSearch }) {
+function SearchInput({ value, onChange, isLoading, onSearch }) {
   return (
     <SearchInputContainer>
       <InputText
@@ -15,8 +16,12 @@ function SearchInput({ value, onChange, onSearch }) {
         onKeyDown={e => e.keyCode === 13 && onSearch(value)}
         placeholder="Faça sua busca"
       />
-      <IconButton aria-label="search" onClick={() => onSearch(value)}>
-        <SearchIcon />
+      <IconButton
+        disabled={isLoading}
+        aria-label="search"
+        onClick={() => onSearch(value)}
+      >
+        {isLoading ? <CircularProgress size={25} /> : <SearchIcon />}
       </IconButton>
     </SearchInputContainer>
   );

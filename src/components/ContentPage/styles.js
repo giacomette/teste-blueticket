@@ -4,6 +4,7 @@ export const Container = styled.div`
   margin: auto;
   max-width: 1200px;
   width: 100%;
+  padding: 0 16px;
 `;
 
 export const WrapperHeader = styled.div`
@@ -22,24 +23,31 @@ export const WrapperHeader = styled.div`
 `;
 
 export const WrapperHeaderTitle = styled.div`
-  font-size: 2.5em;
   color: white;
   float: left;
-  margin-top: 60px;
+  margin-top: 50px;
+
+  h2 {
+    font-size: 2em;
+  }
 
   @media all and (max-width: 400px) {
     float: none;
     text-align: center;
     margin-top: 20px;
-    font-size: 2em;
   }
 `;
 
 export const WrapperHeaderTemp = styled.div`
-  font-size: 2.5em;
   color: white;
   float: right;
-  margin-top: 60px;
+  margin-top: 50px;
+  text-align: right;
+  position: relative;
+  z-index: 1;
+  h2 {
+    font-size: 2em;
+  }
 
   @media all and (max-width: 400px) {
     float: none;
@@ -48,11 +56,22 @@ export const WrapperHeaderTemp = styled.div`
   }
 `;
 
+export const WrapperHeaderTempImage = styled.div`
+  position: absolute;
+  top: -20px;
+  right: 50px;
+  z-index: -1;
+
+  img {
+    width: 80px;
+  }
+`;
+
 export const WrapperHeaderButton = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -10px;
+  bottom: -16px;
 
   @media all and (max-width: 400px) {
     & {

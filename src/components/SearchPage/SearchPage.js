@@ -35,12 +35,16 @@ function SearchPage() {
   const saveAddress = useCallback(
     async address => {
       const {
-        geometry: { location }
+        geometry: { location },
+        formatted_address
       } = address;
 
       setOpenModal(false);
-      await setLatLnt(location);
-      updateState('location', location);
+      await setLatLnt(location.lat, location.lng, formatted_address);
+      updateState('location', {
+        ...location,
+        name: formatted_address
+      });
     },
     [updateState]
   );
@@ -66,6 +70,7 @@ function SearchPage() {
   const getCurrentLocation = useCallback(async () => {
     setIsLoading(true);
     const coords = await requestPermissionLocation();
+    await setLatLnt(coords.latitude, coords.longitude);
     updateState('location', {
       lat: coords.latitude,
       lng: coords.longitude
@@ -91,7 +96,11 @@ function SearchPage() {
         />
         {isLocationGrantedOrPrompt ? (
           <ButtonLocation>
-            <Button size="small" onClick={() => getCurrentLocation()}>
+            <Button
+              disabled={isLoading}
+              size="small"
+              onClick={() => getCurrentLocation()}
+            >
               <LocationOnOutlinedIcon />
               Usar minha localização
             </Button>

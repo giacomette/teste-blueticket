@@ -3,8 +3,6 @@ export async function requestPermissionLocation() {
     window.navigator.geolocation.getCurrentPosition(result => {
       const { coords } = result;
 
-      setLatLnt(coords.latitude, coords.longitude);
-
       resolve(coords);
     }, reject);
   });
@@ -16,8 +14,8 @@ export async function checkPermissionLocation() {
   return result.state;
 }
 
-export function setLatLnt(lat, lng) {
-  localStorage.setItem('latLng', JSON.stringify({ lat, lng }));
+export function setLatLnt(lat, lng, name = null) {
+  localStorage.setItem('latLng', JSON.stringify({ lat, lng, name }));
 }
 
 export function getLatLnt() {

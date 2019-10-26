@@ -8,7 +8,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import AppContext from '../../AppContext';
 import {
   requestPermissionLocation,
-  checkPermissionLocation
+  checkPermissionLocation,
+  setLatLnt
 } from '../../services/gelocation';
 
 function ModalPermission() {
@@ -33,15 +34,13 @@ function ModalPermission() {
     try {
       setOpen(false);
       const coords = await requestPermissionLocation();
- 
+      await setLatLnt(coords.latitude, coords.longitude);
       updateState('location', {
         lat: coords.latitude,
         lng: coords.longitude
       });
     } catch (e) {}
   }, [updateState]);
-
-  console.log('open', open);
 
   return (
     <div>
