@@ -109,7 +109,7 @@ export async function getForecast({ lat, lon }) {
 }
 
 export function saveHistory(search) {
-  const results = getHistory();
+  const results = getHistory() || [];
 
   const exists = results.find(s => s === search);
 
@@ -119,12 +119,18 @@ export function saveHistory(search) {
   }
 }
 
-export function getHistory() {
+export function getHistory(search = '') {
   let results = [];
 
   try {
-    results = JSON.parse(localStorage.getItem('searches'));
+    results = JSON.parse(localStorage.getItem('searches')) || [];
   } catch (e) {}
+
+  if (search) {
+    results = results.filter(word =>
+      word.toLowerCase().includes(search.toLowerCase())
+    );
+  }
 
   return results;
 }

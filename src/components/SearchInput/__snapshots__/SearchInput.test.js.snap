@@ -16,6 +16,7 @@ exports[`SearchInput Deve preservar o estado do componente ao clicar para realiz
         aria-invalid={false}
         className="MuiInputBase-input MuiOutlinedInput-input"
         disabled={false}
+        list="searchs"
         onAnimationStart={[Function]}
         onBlur={[Function]}
         onChange={[Function]}
@@ -87,5 +88,8 @@ exports[`SearchInput Deve preservar o estado do componente ao clicar para realiz
       </svg>
     </span>
   </button>
+  <datalist
+    id="searchs"
+  />
 </div>
 `;

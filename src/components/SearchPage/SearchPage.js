@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
-import { googleMaps } from '../../services/search';
+import { googleMaps, saveHistory } from '../../services/search';
 import {
   setLatLnt,
   checkPermissionLocation,
@@ -50,8 +50,12 @@ function SearchPage() {
   );
 
   const searchAddress = useCallback(async () => {
+    if (!valueSearch) return;
+
     setIsLoading(true);
     try {
+      saveHistory(valueSearch);
+
       const results = await googleMaps(valueSearch);
 
       setAddressResults(results);
