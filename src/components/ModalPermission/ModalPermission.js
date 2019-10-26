@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from '@material-ui/core';
 import AppContext from '../../AppContext';
 import {
   requestPermissionLocation,
@@ -21,7 +23,7 @@ function ModalPermission() {
       if (!value.location) {
         const statusPermission = await checkPermissionLocation();
 
-        if (statusPermission !== 'denied' && statusPermission !== 'granted') {
+        if (statusPermission === 'prompt') {
           setOpen(true);
         }
       }

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
-import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
+import { Button, Snackbar } from '@material-ui/core';
+import { LocationOnOutlined as LocationOnOutlinedIcon } from '@material-ui/icons';
 import { googleMaps, saveHistory, getHistory } from '../../services/search';
 import {
   setLatLnt,
@@ -10,11 +11,12 @@ import SearchInput from '../SearchInput/SearchInput';
 import { HeaderPageContainer, ButtonLocation } from './styles';
 import ModalAddress from '../ModalAddress';
 import AppContext from '../../AppContext';
-import { Button } from '@material-ui/core';
+import ModalPermission from '../ModalPermission';
 
 function SearchPage() {
   const { updateState } = useContext(AppContext);
   const [openModal, setOpenModal] = useState(false);
+  const [openEmptyResult, setOpenEmptyResult] = useState(false);
   const [addressResults, setAddressResults] = useState([]);
   const [valueSearch, setValueSearch] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -62,8 +64,10 @@ function SearchPage() {
 
       if (results.length > 1) {
         setOpenModal(true);
-      } else {
+      } else if (results.length === 1) {
         saveAddress(results[0]);
+      } else {
+        setOpenEmptyResult(true);
       }
     } catch (e) {
     } finally {
@@ -73,12 +77,18 @@ function SearchPage() {
 
   const getCurrentLocation = useCallback(async () => {
     setIsLoading(true);
-    const coords = await requestPermissionLocation();
-    await setLatLnt(coords.latitude, coords.longitude);
-    updateState('location', {
-      lat: coords.latitude,
-      lng: coords.longitude
-    });
+
+    try {
+      const coords = await requestPermissionLocation();
+      await setLatLnt(coords.latitude, coords.longitude);
+      updateState('location', {
+        lat: coords.latitude,
+        lng: coords.longitude
+      });
+    } catch (e) {
+      setIsLocationGrantedOrPrompt(false);
+    }
+
     setIsLoading(false);
   }, [updateState]);
 
@@ -86,12 +96,25 @@ function SearchPage() {
 
   return (
     <React.Fragment>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center'
+        }}
+        open={openEmptyResult}
+        autoHideDuration={2000}
+        onClose={() => setOpenEmptyResult(false)}
+        message={<span id="message-id">Nenhum resultado encontrado!</span>}
+      />
+
       <ModalAddress
         results={addressResults}
         open={openModal}
         onClose={() => setOpenModal(false)}
         onSelected={address => saveAddress(address)}
       />
+
+      <ModalPermission />
 
       <HeaderPageContainer>
         <SearchInput

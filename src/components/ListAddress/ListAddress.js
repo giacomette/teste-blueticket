@@ -1,12 +1,14 @@
 import React from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ImageIcon from '@material-ui/icons/LocationCity';
-import Button from '@material-ui/core/Button';
+import {
+  Avatar,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  ListItemSecondaryAction
+} from '@material-ui/core';
+import { LocationCity as ImageIcon } from '@material-ui/icons';
 
 function ListAddress({ items = [], onSelected }) {
   return (

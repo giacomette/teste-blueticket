@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { Button, Grid } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
-import CardClima from '../CardClima';
-import AppContext from '../../AppContext';
+import { Search as SearchIcon } from '@material-ui/icons';
+import { weatherSiteUrl } from '../../infra/config';
 import { getCurrentWeather, getForecast } from '../../services/search';
 import { clearLatLnt } from '../../services/gelocation';
-import ModalPermission from '../ModalPermission';
+import AppContext from '../../AppContext';
+import CardClima from '../CardClima';
+import ChartClima from '../ChartClima/ChartClima';
 import {
   Container,
   WrapperHeader,
@@ -14,8 +15,6 @@ import {
   WrapperHeaderTempImage,
   WrapperHeaderButton
 } from './styles';
-import ChartClima from '../ChartClima/ChartClima';
-import { weatherSiteUrl } from '../../infra/config';
 
 function ContentPage() {
   const { value, updateState } = useContext(AppContext);
@@ -121,8 +120,6 @@ function ContentPage() {
             </WrapperHeaderButton>
           </Container>
         </WrapperHeader>
-
-        <ModalPermission />
 
         <Container>
           <Grid container spacing={3}>

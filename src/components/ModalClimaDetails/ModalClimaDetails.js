@@ -1,12 +1,14 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid
+} from '@material-ui/core';
 import moment from 'moment';
 import { CardComponent } from '../CardClima/CardClima';
-import { Grid } from '@material-ui/core';
 
 function ModalClimaDetails({ open, onClose, data }) {
   const title = item => moment(item.data).format('HH:mm');
