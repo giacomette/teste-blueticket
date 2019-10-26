@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment'; 
 import {
   weatherUrl,
   weatherKey,
@@ -6,7 +7,6 @@ import {
   googleMapsKey
 } from '../infra/config';
 import { convertKelvinToCelsius } from './gelocation';
-import moment from 'moment';
 
 export async function googleMaps(valueSearch) {
   const { data } = await axios.get(`${googleMapsUrl}/json`, {
