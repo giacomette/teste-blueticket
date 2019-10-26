@@ -9,6 +9,9 @@ export async function requestPermissionLocation() {
 }
 
 export async function checkPermissionLocation() {
+  if (!navigator) return;
+  if (!navigator.permissions) return;
+
   const result = await navigator.permissions.query({ name: 'geolocation' });
 
   return result.state;

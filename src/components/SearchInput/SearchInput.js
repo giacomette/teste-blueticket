@@ -4,11 +4,8 @@ import { IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { SearchInputContainer, InputText } from './styles';
-import { getHistory } from '../../services/search';
 
-function SearchInput({ value, onChange, isLoading, onSearch }) {
-  const suggestions = getHistory();
-
+function SearchInput({ value, onChange, isLoading, onSearch, suggestions }) {
   return (
     <SearchInputContainer>
       <InputText
@@ -16,14 +13,14 @@ function SearchInput({ value, onChange, isLoading, onSearch }) {
         value={value}
         fullWidth
         onChange={e => onChange(e.target.value)}
-        onKeyDown={e => e.keyCode === 13 && onSearch(value)}
+        onKeyDown={e => e.keyCode === 13 && value && onSearch(value)}
         placeholder="Faça sua busca"
         inputProps={{
           list: 'searchs'
         }}
       />
       <IconButton
-        disabled={isLoading}
+        disabled={isLoading || !value}
         aria-label="search"
         onClick={() => onSearch(value)}
       >
@@ -31,9 +28,7 @@ function SearchInput({ value, onChange, isLoading, onSearch }) {
       </IconButton>
 
       <datalist id="searchs">
-        {suggestions.map(item => (
-          <option value={item} />
-        ))}
+        {suggestions || [].map(item => <option value={item} />)}
       </datalist>
     </SearchInputContainer>
   );

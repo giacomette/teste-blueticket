@@ -55,8 +55,8 @@ exports[`SearchInput Deve preservar o estado do componente ao clicar para realiz
   </div>
   <button
     aria-label="search"
-    className="MuiButtonBase-root MuiIconButton-root"
-    disabled={false}
+    className="MuiButtonBase-root MuiIconButton-root Mui-disabled Mui-disabled"
+    disabled={true}
     onBlur={[Function]}
     onClick={[Function]}
     onDragLeave={[Function]}
@@ -69,7 +69,7 @@ exports[`SearchInput Deve preservar o estado do componente ao clicar para realiz
     onTouchEnd={[Function]}
     onTouchMove={[Function]}
     onTouchStart={[Function]}
-    tabIndex={0}
+    tabIndex={-1}
     type="button"
   >
     <span

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
-import { googleMaps, saveHistory } from '../../services/search';
+import { googleMaps, saveHistory, getHistory } from '../../services/search';
 import {
   setLatLnt,
   checkPermissionLocation,
@@ -82,6 +82,8 @@ function SearchPage() {
     setIsLoading(false);
   }, [updateState]);
 
+  const suggestions = getHistory();
+
   return (
     <React.Fragment>
       <ModalAddress
@@ -97,6 +99,7 @@ function SearchPage() {
           onChange={value => setValueSearch(value)}
           onSearch={() => searchAddress()}
           isLoading={isLoading}
+          suggestions={suggestions}
         />
         {isLocationGrantedOrPrompt ? (
           <ButtonLocation>
