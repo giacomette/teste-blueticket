@@ -104,7 +104,7 @@ function SearchPage() {
         open={openEmptyResult}
         autoHideDuration={2000}
         onClose={() => setOpenEmptyResult(false)}
-        message={<span id="message-id">Nenhum resultado encontrado!</span>}
+        message={<span id="message-empty">Nenhum resultado encontrado!</span>}
       />
 
       <ModalAddress
