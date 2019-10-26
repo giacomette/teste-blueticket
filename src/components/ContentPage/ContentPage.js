@@ -87,18 +87,18 @@ function ContentPage() {
                   value.location.name
                 ) : (
                   <span>
-                    {value.location.name || currentWeather.name} ,{' '}
+                    {value.location.name || currentWeather.name || '--'} ,{' '}
                     {currentWeather.country}
                   </span>
                 )}
               </h2>
-              <p>{currentWeather.humidity}% de humidade o ar</p>
+              <p>{currentWeather.humidity || '--'}% de humidade do ar</p>
             </WrapperHeaderTitle>
             <WrapperHeaderTemp>
               <h2>{currentWeather.temp}º</h2>
               <p>
-                Mínima {currentWeather.temp_min}º / Máxima{' '}
-                {currentWeather.temp_max}º
+                Mínima {currentWeather.temp_min || '--'}º / Máxima{' '}
+                {currentWeather.temp_max || '--'}º
               </p>
 
               <WrapperHeaderTempImage>

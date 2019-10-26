@@ -13,41 +13,66 @@ import ModalClimaDetails from '../ModalClimaDetails';
 function CardClima({ isLoading, data }) {
   const [openModal, setOpenModal] = useState(false);
 
+  const title = `${moment(data.data).format('DD/MM/YYYY')} - ${moment(
+    data.data
+  ).format('dddd')}`;
+
   return (
     <CardStyled>
-      <ModalClimaDetails open={openModal} onClose={() => setOpenModal(false)} />
-      <Card onClick={() => setOpenModal(true)}>
-        {isLoading && <Skeleton height={100} />}
-        {!isLoading && (
-          <CardContent>
-            <Typography variant="h6" component="h3">
-              {moment(data.data).format('DD/MM/YYYY')} -{' '}
-              {moment(data.data).format('dddd')}
-            </Typography>
+      <ModalClimaDetails
+        data={data}
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+      />
 
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <Typography>
-                  <IconMin>
-                    <ArrowDownwardIcon />
-                  </IconMin>
-                  {data.temp_min}º mínima
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography>
-                  <IconMax>
-                    <ArrowUpwardIcon />
-                  </IconMax>
-                  {data.temp_max}º máxima
-                </Typography>
-              </Grid>
-            </Grid>
-          </CardContent>
-        )}
-      </Card>
+      <CardComponent
+        title={title}
+        isLoading={isLoading}
+        temp_min={data.temp_min}
+        temp_max={data.temp_max}
+        onClick={() => setOpenModal(true)}
+      />
     </CardStyled>
   );
 }
 
+export function CardComponent({
+  title,
+  temp_min,
+  temp_max,
+  isLoading,
+  onClick
+}) {
+  return (
+    <Card onClick={onClick}>
+      {isLoading && <Skeleton height={100} />}
+      {!isLoading && (
+        <CardContent>
+          <Typography variant="h6" component="h3">
+            {title}
+          </Typography>
+
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <Typography>
+                <IconMin>
+                  <ArrowDownwardIcon />
+                </IconMin>
+                {temp_min}º mínima
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography>
+                <IconMax>
+                  <ArrowUpwardIcon />
+                </IconMax>
+                {temp_max}º máxima
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+      )}
+    </Card>
+  );
+}
 export default CardClima;
