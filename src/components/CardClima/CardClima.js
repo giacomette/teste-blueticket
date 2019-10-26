@@ -8,36 +8,20 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from 'react-loading-skeleton';
 
-function CardClima({ isLoading }) {
+function CardClima({ isLoading, data }) {
+  console.log('CARDCLIMA', data);
   return (
     <div>
       {isLoading && <Skeleton height={100} />}
       {!isLoading && (
-        <Card>
-          <CardActionArea>
-            <CardMedia
-              image="/static/images/cards/contemplative-reptile.jpg"
-              title="Contemplative Reptile"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                Lizard
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Lizards are a widespread group of squamate reptiles, with over
-                6,000 species, ranging across all continents except Antarctica
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary">
-              Share
-            </Button>
-            <Button size="small" color="primary">
-              Learn More
-            </Button>
-          </CardActions>
-        </Card>
+        <div>
+          <Typography variant="h4" component="h3">
+            {data.name} - {data.country}
+          </Typography>
+          <Typography variant="h5" component="h3">
+            {data.temp}ºc
+          </Typography>
+        </div>
       )}
     </div>
   );

@@ -5,6 +5,7 @@ import {
   googleMapsUrl,
   googleMapsKey
 } from '../infra/config';
+import { convertKelvinToCelsius } from './gelocation';
 
 export async function googleMaps(valueSearch) {
   const { data } = await axios.get(`${googleMapsUrl}/json`, {
@@ -19,7 +20,7 @@ export async function googleMaps(valueSearch) {
   return results;
 }
 
-export async function weather({ lat, lon }) {
+export async function getCurrentWeather({ lat, lon }) {
   const { data } = await axios.get(`${weatherUrl}/weather`, {
     params: {
       lat,
@@ -28,10 +29,42 @@ export async function weather({ lat, lon }) {
     }
   });
 
-  console.log('results', data);
+  const { main } = data;
 
-  return data;
+  return {
+    humidity: main.humidity,
+    temp: convertKelvinToCelsius(main.temp),
+    temp_max: convertKelvinToCelsius(main.temp_max),
+    temp_min: convertKelvinToCelsius(main.temp_min),
+    name: data.name,
+    country: data.sys.country
+  };
 }
+
+export async function getForecast({ lat, lon }) {
+  const { data } = await axios.get(`${weatherUrl}/forecast`, {
+    params: {
+      lat,
+      lon,
+      appid: weatherKey
+    }
+  });
+
+  const { main } = data;
+
+  console.log('data Forecast', data)
+
+  return {
+    humidity: main.humidity,
+    temp: convertKelvinToCelsius(main.temp),
+    temp_max: convertKelvinToCelsius(main.temp_max),
+    temp_min: convertKelvinToCelsius(main.temp_min),
+    name: data.name,
+    country: data.sys.country
+  };
+}
+
+ 
 
 export function saveHistory(search) {
   const results = getHistory();

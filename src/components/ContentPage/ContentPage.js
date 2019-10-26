@@ -1,15 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import { Button, Paper, Grid } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import CardClima from '../CardClima';
 import AppContext from '../../AppContext';
-import { weather } from '../../services/search';
+import { getCurrentWeather } from '../../services/search';
 import ModalPermission from '../ModalPermission';
+import {
+  Container,
+  WrapperHeader,
+  WrapperHeaderTitle,
+  WrapperHeaderTemp,
+  WrapperHeaderButton
+} from './styles';
 
 function ContentPage() {
-  const { value } = useContext(AppContext);
+  const { value, updateState } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [weathers, setWeathers] = useState(false);
+  const [currentWeather, setCurrentWeather] = useState({});
 
   useEffect(() => {
     if (!value.location) return;
@@ -20,12 +27,14 @@ function ContentPage() {
       setIsLoading(true);
 
       try {
-        const results = await weather({
+        const result = await getCurrentWeather({
           lat: location.lat,
           lon: location.lng
         });
 
-        setWeathers(results);
+        console.log('results', result);
+
+        setCurrentWeather(result);
       } catch (e) {
       } finally {
         setIsLoading(false);
@@ -37,33 +46,56 @@ function ContentPage() {
 
   return (
     <React.Fragment>
+      <WrapperHeader>
+        <Container>
+          <WrapperHeaderTitle>
+            {currentWeather.name || ''} - {currentWeather.country || ''}
+          </WrapperHeaderTitle>
+          <WrapperHeaderTemp>{currentWeather.temp}ºC</WrapperHeaderTemp>
+
+          <WrapperHeaderButton>
+            <Button
+              onClick={() => updateState({})}
+              variant="contained"
+              color="secondary"
+            >
+              <SearchIcon /> Refazer a Busca
+            </Button>
+          </WrapperHeaderButton>
+        </Container>
+      </WrapperHeader>
+
       <ModalPermission />
       {value.location ? (
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Paper>
-              <CardClima isLoading={isLoading} />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper>xs=12 sm=6</Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper>xs=12 sm=6</Paper>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper>xs=6 sm=3</Paper>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper>xs=6 sm=3</Paper>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper>xs=6 sm=3</Paper>
-          </Grid>
-          <Grid item xs={6} sm={3}>
-            <Paper>xs=6 sm=3</Paper>
-          </Grid>
-        </Grid>
+        <div>
+          <Container>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Paper>
+                  <CardClima data={currentWeather} isLoading={isLoading} />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Paper>xs=12 sm=6</Paper>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Paper>xs=12 sm=6</Paper>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <Paper>xs=6 sm=3</Paper>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <Paper>xs=6 sm=3</Paper>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <Paper>xs=6 sm=3</Paper>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <Paper>xs=6 sm=3</Paper>
+              </Grid>
+            </Grid>
+          </Container>
+        </div>
       ) : null}
     </React.Fragment>
   );
