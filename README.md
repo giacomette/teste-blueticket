@@ -2,7 +2,7 @@
 
 Versão demonstrativa online https://blueticket.herokuapp.com/
 
-Depois de clonar o repositório será necessário adicionar algumas variáveis no .env
+Depois de clonar o repositório será necessário criar um arquivo .env e copiar o conteúdo do .env.example e adicionar valores próprios para as variáveis
 
  - REACT_APP_GOOGLE_MAPS_KEY
  - REACT_APP_WEATHER_KEY
