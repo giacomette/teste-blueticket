@@ -28,7 +28,9 @@ function SearchInput({ value, onChange, isLoading, onSearch, suggestions }) {
       </IconButton>
 
       <datalist id="searchs">
-        {suggestions || [].map(item => <option value={item} />)}
+        {(suggestions || []).map((item, key) => (
+          <option key={key} value={item} />
+        ))}
       </datalist>
     </SearchInputContainer>
   );
